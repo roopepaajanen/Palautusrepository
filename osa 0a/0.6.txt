@@ -1,0 +1,22 @@
+Selain                                                                                 Palvelin
+|                                                                                          |                                   
+|        ---HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa -->                     |
+|                           <-----HTML-koodi----                                           |
+|                                                                                          |                                   
+|        --- HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css -->               |                                 
+|                            <--- main.css --------                                        |
+|                                                                                          |
+|          --- HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js ---->                      |                     
+|                           <--- spa.js-----                                               |     
+|                                                                                          |
+| Selain suorittaa js-koodin, joka pyytää datan JSON-data palvilimelta                     |                      
+|                                                                                          |
+|        ---- HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json -->             |
+|           <--- {content: "bond", date: "2022-08-02T02:11:42.992Z"},…]---                 |
+|                                                                                          |
+Selain suorittaa tapahtumankäsittelijän joka renderöi listan näytölle                      |
+|                                                                                          |
+|      ----HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa-->             |
+|        ---HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa -->                     |
+|                           <-----HTML-koodi----                                           |
+

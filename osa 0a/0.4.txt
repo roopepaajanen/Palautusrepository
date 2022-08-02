@@ -1,0 +1,12 @@
+selain --> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+Palvelin --> selain: text/html koodi
+selain --> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Palvelin --> selain: main.js
+selain --> palvelin:  HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+Palvelin --> selain: main.css
+
+
+Note over selain:
+Selain alkaa suorittamaan js-koodia joka parsettaa .txt tiedoston json muotoon. Tämän jälkeen .js koodi luo listan, jossa jokainen indexi on 'li' listalla looppaamalla json datan läpi.
+end note
+
