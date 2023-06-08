@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 const baseUrl = "http://localhost:3001/api/persons";
 
 const getAll = () => {
@@ -21,4 +21,12 @@ const remove = (id) => {
   return request.then((response) => response.data);
 };
 
-export default { getAll, create, update, remove };
+const personService = {
+  getAll,
+  create,
+  update,
+  remove,
+};
+
+export default personService;
+
