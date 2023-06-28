@@ -1,10 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 
-
-
 const app = express();
 app.use(express.json());
+
+app.use(express.static('build'))
 
 const cors = require('cors')
 app.use(cors())
@@ -84,6 +84,7 @@ app.post('/api/persons', (req, res) => {
 });
 
 app.get('/info', (req, res) => {
+  console.log('nyt ollaan backendissa');
   const currentDate = new Date().toString();
   const info = `Phonebook has info for ${notes.length} people\n${currentDate}`;
   res.send(info);
