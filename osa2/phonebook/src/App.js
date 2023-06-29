@@ -116,6 +116,9 @@ const handleSubmit = (event) => {
             message: `Updated ${newName}`,
             className: "change",
           });
+          personsService.getAll().then((persons) => {
+            setPersons(persons);
+          });
           resetPersonForm();
         })
         .catch((error) => {
@@ -136,6 +139,9 @@ const handleSubmit = (event) => {
           message: `Added ${newName}`,
           className: "good",
         });
+        personsService.getAll().then((persons) => {
+          setPersons(persons);
+        });
         resetPersonForm();
       })
       .catch((error) => {
@@ -149,9 +155,9 @@ const handleSubmit = (event) => {
 };
 
 
-  const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(filter.toLowerCase())
-  );
+const filteredPersons = persons.filter((person) =>
+  person && person.name && person.name.toLowerCase().includes(filter.toLowerCase())
+);
 
   const Notification = ({ message, className }) => {
     if (message === null) {
