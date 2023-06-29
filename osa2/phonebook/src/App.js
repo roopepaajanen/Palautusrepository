@@ -62,7 +62,7 @@ const handleSubmit = (event) => {
     return;
   }
 
-  if (newName.length < 4) {
+  if (newName.length < 3) {
     setNotification({
       message: "Name must be at least 3 characters long",
       className: "error",
