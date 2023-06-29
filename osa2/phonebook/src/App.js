@@ -88,7 +88,7 @@ const handleSubmit = (event) => {
 
   if (!/^\d{2,3}-\d+$/.test(newNumber)) {
     setNotification({
-      message: "Invalid phone number format",
+      message: "Invalid phone number format, the right format is: 123-1234567",
       className: "error",
     });
     return;
