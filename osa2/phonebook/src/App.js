@@ -52,68 +52,102 @@ const App = () => {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (newName === "" || newNumber === "") {
-      setNotification({
-        message: "Empty name or number is not accepted",
-        className: "error",
-      });
-      return;
-    }
-    const personExists = persons.find((person) => person.name === newName);
+const handleSubmit = (event) => {
+  event.preventDefault();
+  if (newName === "" || newNumber === "") {
+    setNotification({
+      message: "Empty name or number is not accepted",
+      className: "error",
+    });
+    return;
+  }
 
-    if (personExists) {
-      if (
-        window.confirm(
-          `${newName} is already added to the phonebook, replace the old number with a new one?`
-        )
-      ) {
-        const updatedPerson = { ...personExists, number: newNumber };
+  if (newName.length < 4) {
+    setNotification({
+      message: "Name must be at least 3 characters long",
+      className: "error",
+    });
+    return;
+  }
 
-        personsService
-          .update(personExists.id, updatedPerson)
-          .then((response) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== personExists.id ? person : response.data
-              )
-            );
-            setNotification({
-              message: `Updated ${newName}`,
-              className: "change",
-            });
-            resetPersonForm();
-          })
-          .catch((error) => {
-            console.error(error);
-            setNotification({
-              message: `Error updating ${newName}`,
-              className: "error",
-            });
-          });
-      }
-    } else {
-      const person = createNewPerson();
+  if (/[a-zA-Z]/.test(newNumber)) {
+    setNotification({
+      message: "Number must only contain numbers",
+      className: "error",
+    });
+    return;
+  }
+
+  if (newNumber.length < 8) {
+    setNotification({
+      message: "Number must be at least 8 characters long",
+      className: "error",
+    });
+    return;
+  }
+
+  if (!/^\d{2,3}-\d+$/.test(newNumber)) {
+    setNotification({
+      message: "Invalid phone number format",
+      className: "error",
+    });
+    return;
+  }
+
+  const personExists = persons.find((person) => person.name === newName);
+
+  if (personExists) {
+    if (
+      window.confirm(
+        `${newName} is already added to the phonebook, replace the old number with a new one?`
+      )
+    ) {
+      const updatedPerson = { ...personExists, number: newNumber };
+
       personsService
-        .create(person)
+        .update(personExists.id, updatedPerson)
         .then((response) => {
-          setPersons(persons.concat(response.data));
+          setPersons(
+            persons.map((person) =>
+              person.id !== personExists.id ? person : response.data
+            )
+          );
           setNotification({
-            message: `Added ${newName}`,
-            className: "good",
+            message: `Updated ${newName}`,
+            className: "change",
           });
           resetPersonForm();
         })
         .catch((error) => {
-          console.error(error);
+          console.error(error.response.data);
           setNotification({
-            message: `Error adding ${newName}`,
+            message: `Error updating ${newName}: ${error.response.data.error}`,
             className: "error",
           });
         });
     }
-  };
+  } else {
+    const person = createNewPerson();
+    personsService
+      .create(person)
+      .then((response) => {
+        setPersons(persons.concat(response.data));
+        setNotification({
+          message: `Added ${newName}`,
+          className: "good",
+        });
+        resetPersonForm();
+      })
+      .catch((error) => {
+        console.error(error.response.data);
+        setNotification({
+          message: `Error adding ${newName}: ${error.response.data.error}`,
+          className: "error",
+        });
+      });
+  }
+};
+
 
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())

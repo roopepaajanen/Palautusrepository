@@ -1,34 +1,28 @@
 const mongoose = require('mongoose');
 
-mongoose.set('strictQuery', false)
+mongoose.set('strictQuery', false);
 
-
-//const url = process.env.MONGODB_URI
-const url = "mongodb+srv://roopepaajanen:Italianvesikoira14@cluster0.p0ar5mq.mongodb.net/noteApp?retryWrites=true&w=majority"
-
-console.log('connecting to', url)
+const url = process.env.MONGODB_URI;
 
 mongoose.connect(url)
   .then(result => {
-    console.log('connected to MongoDB')
+    console.log(url);
   })
   .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
+    console.log('error connecting to MongoDB:', error.message);
+  });
 
 const personSchema = new mongoose.Schema({
   name: String,
   number: String,
-})
-
+});
 
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
-
-module.exports = mongoose.model('people', personSchema)
+module.exports = mongoose.model('people', personSchema);
