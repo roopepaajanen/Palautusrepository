@@ -1,21 +1,34 @@
-const mongoose = require('mongoose');
-
-mongoose.set('strictQuery', false)
+const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
+  title: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  author: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  url: {
+    type: String,
+    required: true,
+    minlength: 5
+  },
+  likes: {
+    type: Number,
+    required: true,
+    min: 0
+  }
+})
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    console.log("transform");
     returnedObject.id = returnedObject._id.toString()
     delete returnedObject._id
     delete returnedObject.__v
   }
 })
 
-module.exports = mongoose.model('Blog', blogSchema);
+module.exports = mongoose.model('Blog', blogSchema)

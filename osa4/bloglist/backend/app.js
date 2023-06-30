@@ -1,77 +1,33 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const mongoose = require('mongoose');
-const morgan = require('morgan')
+const config = require('./utils/config')
+const express = require('express')
+const cors = require('cors')
+const blogsRouter = require('./controllers/blogs')
+const middleware = require('./utils/middleware')
+const logger = require('./utils/logger')
+const mongoose = require('mongoose')
 
-morgan.token('requestData', (req) => {
-  return JSON.stringify(req.body)
-})
+const app = express()
 
-const format = ':method :url :status :response-time ms - :requestData'
+mongoose.set('strictQuery', false)
 
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
+logger.info('connecting to', config.MONGODB_URI)
 
-const Blog = mongoose.model('Blog', blogSchema);
-
-const mongoUrl = process.env.MONGODB_URI
-
-mongoose.connect(mongoUrl);
-console.log('connected to MongoDB', mongoUrl);
-
-app.use(morgan(format))
-app.use(cors());
-app.use(express.json());
-
-app.get('/api/blogs', (request, response, next) => {
-  console.log("get blogs");
-  Blog.find({})
-  .then((blogs) => {
-    response.status(200).json(blogs);
-  })
-  .catch(error => {
-    console.log("error", error)
-    next(error)
-  })
-})
-
-app.post('/api/blogs', (request, response, next) => {
-  console.log("new blog", request.body);
-  const blog = new Blog(request.body);
-
-  blog.save()
-  .then((savedBlog) => {
-    //response.json(savedBlog);
-    response.status(201).json(savedBlog);
+mongoose.connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info('connected to MongoDB')
   })
   .catch((error) => {
-    console.log(error);
-    next(error);
-  });
-});
+    logger.error('error connection to MongoDB:', error.message)
+  })
 
-const errorHandler = (error, req, res, next) => {
-  console.error(error.message)
+app.use(cors())
+app.use(express.static('build'))
+app.use(express.json())
+app.use(middleware.requestLogger)
 
-  if (error.name === 'CastError') {
-    return res.status(400).send({ error: 'Malformatted id' })
-  }
+app.use('/api/blogs', blogsRouter)
 
-  if (error.name === 'ValidationError') {
-    return res.status(400).json({ error: error.message })
-  }
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
-  res.status(500).end()
-}
-
-app.use(errorHandler)
-
-const PORT = process.env.PORT || 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+module.exports = app

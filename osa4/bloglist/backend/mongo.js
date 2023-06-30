@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+/*const mongoose = require('mongoose');
 
 mongoose.set('strictQuery', false)
 
@@ -10,4 +10,4 @@ mongoose.connect(mongoUrl)
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error.message);
-  });
+  });*/
