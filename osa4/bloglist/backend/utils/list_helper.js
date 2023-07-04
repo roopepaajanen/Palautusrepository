@@ -23,14 +23,11 @@ const mostBlogs = (blogs) => {
   if (blogs.length === 0) {
     return null
   }
-  console.log(blogs)
 
   const blogCounts = lodash.countBy(blogs, 'author')
-  console.log(blogCounts)
 
-  const sortedAuthors = lodash.orderBy(lodash.keys(blogCounts), (author) => blogCounts[author], ['desc']);
+  const sortedAuthors = lodash.orderBy(lodash.keys(blogCounts), (author) => blogCounts[author], ['desc'])
 
-  console.log(sortedAuthors)
   return {
     author: sortedAuthors[0],
     blogs: blogCounts[sortedAuthors[0]]
