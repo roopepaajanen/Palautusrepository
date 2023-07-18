@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
 const BlogForm = ({ addBlog, newTitle, newAuthor, newUrl, setNewTitle, setNewAuthor, setNewUrl }) => {
   const handleSubmit = (event) => {
-    event.preventDefault();
-    addBlog(event);
-  };
+    event.preventDefault()
+    addBlog(event)
+  }
 
   return (
     <div>
@@ -40,7 +40,7 @@ const BlogForm = ({ addBlog, newTitle, newAuthor, newUrl, setNewTitle, setNewAut
         <button type="submit">Create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default BlogForm;
+export default BlogForm

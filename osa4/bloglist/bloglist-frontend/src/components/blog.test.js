@@ -5,7 +5,7 @@ import Blog from './Blog'
 import BlogForm from './BlogForm'
 
 describe('Blog Component', () => {
-  
+
   const blog = {
     title: 'Test Blog',
     author: 'Juuso justiinsa',
