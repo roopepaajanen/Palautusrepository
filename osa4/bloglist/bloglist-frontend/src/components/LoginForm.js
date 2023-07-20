@@ -15,10 +15,10 @@ const LoginForm = ({ handleLogin, username, password, setUsername, setPassword }
       <h1>Log into application</h1>
       <form>
         Username:
-        <input type="text" value={username} onChange={event => setUsername(event.target.value)} />
+        <input id="username" type="text" value={username} onChange={event => setUsername(event.target.value)} />
         Password:
-        <input type="password" value={password} onChange={event => setPassword(event.target.value)} />
-        <button type="submit" onClick={handleLogin}>
+        <input id="password" type="password" value={password} onChange={event => setPassword(event.target.value)} />
+        <button id="login-button" type="submit" onClick={handleLogin}>
           Login
         </button>
       </form>

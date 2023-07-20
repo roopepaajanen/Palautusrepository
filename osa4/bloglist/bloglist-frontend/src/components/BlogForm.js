@@ -9,12 +9,12 @@ const BlogForm = ({ addBlog, newTitle, newAuthor, newUrl, setNewTitle, setNewAut
   return (
     <div>
       <h2>Create a new Blog</h2>
-      <form onSubmit={handleSubmit}>
+      <form data-testid="blog-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title:</label>
           <input
             type="text"
-            id="title"
+            id="blogTitle"
             value={newTitle}
             onChange={(event) => setNewTitle(event.target.value)}
           />
@@ -37,7 +37,7 @@ const BlogForm = ({ addBlog, newTitle, newAuthor, newUrl, setNewTitle, setNewAut
             onChange={(event) => setNewUrl(event.target.value)}
           />
         </div>
-        <button type="submit">Create</button>
+        <button id="submit" type="submit">Create</button>
       </form>
     </div>
   )

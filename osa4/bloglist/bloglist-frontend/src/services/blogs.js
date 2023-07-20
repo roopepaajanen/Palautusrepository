@@ -6,7 +6,6 @@ let token = null
 
 const setToken = newToken => {
   token = `bearer ${newToken}`
-  console.log('token set to:', token)
 }
 
 const getAll = async () => {
@@ -20,6 +19,7 @@ const getAll = async () => {
 }
 
 const addBlog = async (blog) => {
+  console.log('adding stuff in blogs.js')
   const config = {
     headers: { Authorization: token },
   }

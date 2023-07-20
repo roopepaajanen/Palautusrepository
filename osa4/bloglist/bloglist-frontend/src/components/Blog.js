@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, handleLike, handleDelete }) => {
+const Blog = ({ blog, handleLike, handleDelete, currentUser }) => {
   const [showDetails, setShowDetails] = useState(false)
 
   const toggleDetails = () => {
@@ -16,6 +16,7 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
       handleDelete(blog.id)
     }
   }
+  const isCurrentUserBlogCreator = currentUser && (currentUser.username === blog.user.username || currentUser.id === blog.user.id)
 
   const blogStyle = {
     paddingTop: 10,
@@ -34,17 +35,21 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
         <p>
           <strong>Author:</strong> {blog.author}
         </p>
-        <button onClick={toggleDetails}>{showDetails ? 'Hide' : 'View'}</button>
+        <button data-testid={`toggle-button-${blog.id}`} onClick={toggleDetails}>
+          {showDetails ? 'Hide' : 'View'}
+        </button>
       </div>
       {showDetails && (
         <div>
           <div><strong>URL: </strong>{blog.url}</div>
           <div>
             <strong>Likes:</strong> {blog.likes}{' '}
-            <button onClick={handleLikeClick}>Like</button>
+            <button id="likeButton" onClick={handleLikeClick}>Like</button>
           </div>
           <div><strong>username: </strong>{blog.user.name}</div>
-          <button onClick={handleDeleteClick}>Delete</button>
+          {isCurrentUserBlogCreator && (
+            <button id="deleteButton" onClick={handleDeleteClick}>Delete</button>
+          )}
         </div>
       )}
     </div>

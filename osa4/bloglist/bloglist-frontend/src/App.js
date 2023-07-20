@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
-import Blog from './components/Blog'
-import Togglable from './components/Toggle'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import Footer from './components/Footer'
+import Blog from './components/Blog.js'
+import Togglable from './components/Toggle.js'
+import Notification from './components/Notification.js'
+import LoginForm from './components/LoginForm.js'
+import BlogForm from './components/BlogForm.js'
+import Footer from './components/Footer.js'
 
-import blogService from './services/blogs'
-import loginService from './services/login'
+import blogService from './services/blogs.js'
+import loginService from './services/login.js'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -61,8 +61,13 @@ const App = () => {
     event.preventDefault()
     try {
       const user = await loginService.login(username, password)
-      setUser(user)
+      blogService.setToken(user.token)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
+      setUser({
+        id: user.id,
+        username: user.username,
+        name: user.name,
+      })
       setUsername('')
       setPassword('')
       setNotification({
@@ -70,6 +75,7 @@ const App = () => {
         className: 'good',
       })
     } catch (error) {
+      console.log('Login failed. Error:', error)
       setNotification({
         message: 'Wrong username or password',
         className: 'error',
@@ -96,6 +102,10 @@ const App = () => {
       )
     } catch (error) {
       console.log('Error updating blog:', error)
+      setNotification({
+        message: 'Error updating blog',
+        className: 'error',
+      })
     }
   }
 
@@ -105,6 +115,10 @@ const App = () => {
       setBlogs(blogs.filter((blog) => blog.id !== blogId))
     } catch (error) {
       console.log('Error deleting blog:', error)
+      setNotification({
+        message: 'Error deleting blog',
+        className: 'error',
+      })
     }
   }
 
@@ -118,6 +132,8 @@ const App = () => {
       }
 
       const addedBlog = await blogService.addBlog(blog)
+      console.log('ADDING BLOG')
+      console.log('addedBlog:', addedBlog)
       setBlogs(blogs.concat(addedBlog))
       setNewTitle('')
       setNewAuthor('')
@@ -175,6 +191,7 @@ const App = () => {
           blog={blog}
           handleLike={handleLike}
           handleDelete={handleDelete}
+          currentUser={user}
         />
       ))}
 

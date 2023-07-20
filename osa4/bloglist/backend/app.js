@@ -10,6 +10,11 @@ const mongoose = require('mongoose')
 
 const app = express()
 
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
+
 mongoose.set('strictQuery', false)
 
 logger.info('connecting to', config.MONGODB_URI)
@@ -35,6 +40,5 @@ app.use('/api/blogs', blogsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
-
 
 module.exports = app
