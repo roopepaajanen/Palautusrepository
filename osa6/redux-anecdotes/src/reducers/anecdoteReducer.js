@@ -21,17 +21,6 @@ const initialState = {
   filter: '',
 };
 
-export const addAnecdoteAsync = createAsyncThunk(
-  'anecdotes/addAnecdoteAsync',
-  async (content) => {
-    return {
-      content,
-      id: getId(),
-      votes: 0,
-    };
-  }
-);
-
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState,
@@ -57,6 +46,17 @@ const anecdoteSlice = createSlice({
     });
   },
 });
+
+export const addAnecdoteAsync = createAsyncThunk(
+  'anecdotes/addAnecdoteAsync',
+  async (content) => {
+    return {
+      content,
+      id: getId(),
+      votes: 0,
+    };
+  }
+);
 
 export const { voteAnecdote, setFilter } = anecdoteSlice.actions;
 export default anecdoteSlice.reducer;
