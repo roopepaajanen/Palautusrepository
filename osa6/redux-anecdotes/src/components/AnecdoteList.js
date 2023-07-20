@@ -1,48 +1,40 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { voteAnecdote } from '../reducers/anecdoteReducer';
-import { setNotification, clearNotification } from '../reducers/notificationReducer';
-
-const Anecdote = ({ anecdote, handleClick }) => {
-  return (
-    <div>
-      <div>{anecdote.content}</div>
-      <div>
-        has {anecdote.votes}
-        <button onClick={handleClick}>vote</button>
-      </div>
-    </div>
-  );
-};
+import { useSelector, useDispatch } from 'react-redux'
+import { vote } from "../reducers/anecdoteReducer"
+import { setNotification } from '../reducers/notificationReducer'
+import AnecdotesFilter from './Filter'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => state.anecdotes.anecdotes);
-  const filter = useSelector((state) => state.anecdotes.filter); // Get the filter value from the state
-  const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes);
-  const dispatch = useDispatch();
+  const anecdotes = useSelector(state => state.anecdotes)
+  const filter = useSelector(state => state.filter)
+  const dispatch = useDispatch()
 
-  const handleVote = (id) => {
-    dispatch(voteAnecdote(id));
-    // Show notification when adding an anecdote
-    dispatch(setNotification(`You voted: "${anecdotes.find((anecdote) => anecdote.id === id).content}"`));
-    setTimeout(() => {
-      dispatch(clearNotification());
-    }, 5000); // Remove notification after 5 seconds
-  };
-  const filteredAnecdotes = filter
-    ? sortedAnecdotes.filter((anecdote) =>
-        anecdote.content.toLowerCase().includes(filter.toLowerCase())
-      )
-    : sortedAnecdotes;
+  const onVoteClick = anecdote => {
+    const id = anecdote.id
+    dispatch(vote(id))
+    dispatch(setNotification(`You voted anecdote "${anecdote.content}"`, 10))
+  }
 
-  return (
-    <div>
-      <h2>Anecdotes</h2>
-      {filteredAnecdotes.map((anecdote) => (
-        <Anecdote key={anecdote.id} anecdote={anecdote} handleClick={() => handleVote(anecdote.id)} />
-      ))}
-    </div>
-  );
-};
+  const sortedAnecdotes = anecdotes;
+  sortedAnecdotes.sort((a, b) => b.votes - a.votes)
 
-export default AnecdoteList;
+  return <div>
+    <AnecdotesFilter />
+    {sortedAnecdotes.map(anecdote => {
+      if (!anecdote.content.toLowerCase().includes(filter)) {
+        return null
+      }
+      return <div key={anecdote.id}>
+        <div>
+          {anecdote.content}
+        </div>
+        <div>
+          has {anecdote.votes} votes
+          <button onClick={() => onVoteClick(anecdote)}>vote</button>
+        </div>
+      </div>
+    }
+    )}
+  </div>
+}
+
+export default AnecdoteList

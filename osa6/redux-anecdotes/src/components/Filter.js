@@ -1,24 +1,26 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setFilter } from '../reducers/anecdoteReducer';
+import React from 'react'
+import { connect } from 'react-redux'
+import { setFilter } from '../reducers/filterReducer';
 
-const Filter = () => {
-  const dispatch = useDispatch();
-
+const AnecdotesFilter = (props) => {
   const handleChange = (event) => {
-    const filterText = event.target.value;
-    dispatch(setFilter(filterText)); 
-  };
+    props.setFilter(event.target.value)
+  }
 
   const style = {
-    marginBottom: 10,
-  };
+    marginBottom: 10
+  }
 
   return (
     <div style={style}>
-      filter <input onChange={handleChange} />
+      Filter <input onChange={handleChange} />
     </div>
-  );
-};
+  )
+}
 
-export default Filter;
+const mapDispatchToProps = {
+  setFilter
+}
+
+const ConnectedAnecdotesFilter = connect(null, mapDispatchToProps)(AnecdotesFilter);
+export default ConnectedAnecdotesFilter
