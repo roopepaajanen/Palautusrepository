@@ -22,8 +22,6 @@ const useCountry = (name) => {
     if (name === "" || name === null || name === undefined) {
       return;
     }
-
-    //const apiUrl = `https://restcountries.eu/rest/v2/name/${name}?fullText=true`
     const apiUrl = `https://studies.cs.helsinki.fi/restcountries/api/name/${name}`
     async function getData() {
       try {
