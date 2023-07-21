@@ -1,6 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { useField } from '../hooks/index';
 
 const CreateNew = (props) => {
+    const navigate = useNavigate();
     const content = useField("text")
     const author = useField("text")
     const info = useField("text")
@@ -13,13 +15,15 @@ const CreateNew = (props) => {
         info: info.value,
         votes: 0
       })
+        navigate("/");
     }
   
     const resetFields = (e) => {
-      e.preventDefault();
-      content.reset();
-      author.reset();
-      info.reset();
+        console.log("e",e)
+        e.preventDefault();
+        content.reset();
+        author.reset();
+        info.reset();
     }
   
     return (

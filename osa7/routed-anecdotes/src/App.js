@@ -31,7 +31,7 @@ const App = () => {
     setAnecdotes([...anecdotes, anecdote]);
     setNotification(`A new anecdote ${anecdote.content} created!`)
     setTimeout(() => setNotification(null), 10 * 1000);
-
+    
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
